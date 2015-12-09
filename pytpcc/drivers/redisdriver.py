@@ -1524,7 +1524,7 @@ class RedisDriver(AbstractDriver):
 				])
 				self.w_pipes[node].sadd('ORDER.IDS', key)
 				self.w_pipes[node].hmset(
-					'ORDER.' + key,
+					'ORDERS.' + key,
 					{
 						'O_ID'         : record[0],
 						'O_D_ID'       : record[1],
