@@ -411,7 +411,7 @@ class RedisDriver(AbstractDriver):
 			if no_o_id[cursor] == None or c_id[cursor] == None :
 				si_key = 'NO_KEY'
 			else :
-				si_key = self.safeKey([no_o_id[cursor], w_id, d_id])
+				si_key = self.safeKey([no_o_id[cursor], d_id, w_id])
 			rdr.smembers('ORDER_LINE.INDEXES.SUMOLAMOUNT.' + si_key)
 		ol_ids = rdr.execute()
 		
