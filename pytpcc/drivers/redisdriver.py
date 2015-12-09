@@ -237,7 +237,7 @@ class RedisDriver(AbstractDriver):
 					'O_OL_CNT'     : 6,
 					'O_ALL_LOCAL'  : 7,
 				},
-			'primary_key' : ['O_ID', 'O_C_ID', 'O_D_ID', 'O_W_ID'],
+			'primary_key' : ['O_W_ID', 'O_D_ID', 'O_ID'],
 			'indexes' : [ ],
 		},
 		'NEW_ORDER' : {
@@ -647,7 +647,7 @@ class RedisDriver(AbstractDriver):
 		ol_cnt = len(i_ids)
 		o_carrier_id = constants.NULL_CARRIER_ID
 		order_key = self.safeKey([w_id, d_id, d_next_o_id])
-		new_order_key = self.safeKey([d_next_o_id, w_id, d_id])
+		new_order_key = self.safeKey([d_id, w_id, d_next_o_id])
 		
 		#-------------------------------
 		# Increment Next Order ID Query
@@ -1517,10 +1517,9 @@ class RedisDriver(AbstractDriver):
 			elif tableName == 'ORDERS' :
 				node = self.shard(record[column_map['O_W_ID']])
 				key = self.safeKey([
-					record[0], 
-					record[3], 
-					record[1], 
-					record[2]
+					record[2],
+					record[1],
+					record[0]
 				])
 				self.w_pipes[node].sadd('ORDER.IDS', key)
 				self.w_pipes[node].hmset(
