@@ -381,7 +381,7 @@ class RedisDriver(AbstractDriver):
 		
 		for d_id in range(1, constants.DISTRICTS_PER_WAREHOUSE + 1) :	
 			cursor = d_id - 1
-			if id_set[cursor] == None :
+			if not id_set[cursor]:
 				rdr.get('NULL_VALUE')
 			else :
 				rdr.hget('NEW_ORDER.' + str(id_set[cursor]), 'NO_O_ID')
@@ -396,7 +396,7 @@ class RedisDriver(AbstractDriver):
 		#-----------------------
 		for d_id in range(1, constants.DISTRICTS_PER_WAREHOUSE + 1) :	
 			cursor = d_id - 1
-			if no_o_id[cursor] == None :
+			if not no_o_id[cursor]:
 				order_key.insert(cursor, 'NO_KEY')
 			else :
 				order_key.insert(
@@ -408,7 +408,7 @@ class RedisDriver(AbstractDriver):
 		
 		for d_id in range(1, constants.DISTRICTS_PER_WAREHOUSE + 1) :	
 			cursor = d_id - 1
-			if no_o_id[cursor] == None or c_id[cursor] == None :
+			if not no_o_id[cursor] or not c_id[cursor]:
 				si_key = 'NO_KEY'
 			else :
 				si_key = self.safeKey([no_o_id[cursor], d_id, w_id])
@@ -424,7 +424,7 @@ class RedisDriver(AbstractDriver):
 		#-----------------------------
 		for d_id in range(1, constants.DISTRICTS_PER_WAREHOUSE + 1) :	
 			cursor = d_id - 1
-			if no_o_id[cursor] == None or c_id[cursor] == None :
+			if not no_o_id[cursor] or not c_id[cursor]:
 				rdr.get('NULL_VALUE')
 			else :
 				for i in ol_ids[cursor] :
@@ -440,7 +440,7 @@ class RedisDriver(AbstractDriver):
 			if counter > ol_counts[index] :
 				index += 1
 				counter = 0
-			elif ol_amount != None :
+			elif ol_amount:
 				ol_total[index] += float(ol_amount)
 		
 		if self.debug['delivery'] == 'Verbose' :
@@ -449,7 +449,7 @@ class RedisDriver(AbstractDriver):
 				
 		for d_id in range(1, constants.DISTRICTS_PER_WAREHOUSE + 1) :	
 			cursor = d_id - 1
-			if no_o_id[cursor] == None or c_id[cursor] == None :
+			if not no_o_id[cursor] or not c_id[cursor]:
 				## No orders for this district: skip it. 
 				## Note: This must be reported if > 1%
 				continue
@@ -499,7 +499,7 @@ class RedisDriver(AbstractDriver):
 		#-----------------------
 		for d_id in range(1, constants.DISTRICTS_PER_WAREHOUSE + 1) :	
 			cursor = d_id - 1
-			if no_o_id[cursor] == None or c_id[cursor] == None :
+			if not no_o_id[cursor] or not c_id[cursor]:
 				rdr.get('NULL_VALUE')
 				customer_key.insert(cursor, 'NO_KEY')
 			else :
@@ -512,7 +512,7 @@ class RedisDriver(AbstractDriver):
 		
 		for d_id in range(1, constants.DISTRICTS_PER_WAREHOUSE + 1) :
 			cursor = d_id - 1
-			if no_o_id[cursor] == None or c_id[cursor] == None :
+			if not no_o_id[cursor] or not c_id[cursor]:
 				continue
 			else :
 				new_balance = float(old_balance[cursor]) + float(ol_total[cursor])
@@ -583,7 +583,7 @@ class RedisDriver(AbstractDriver):
 		
 		for pr in pipe_results :
 			if len(pr) > 0 :
-				if pr['I_PRICE'] == None and pr['I_NAME'] == None and pr['I_DATA'] == None :
+				if not pr['I_PRICE'] and not pr['I_NAME'] and not pr['I_DATA']:
 					result = [ ]
 				items.append([
 					pr['I_PRICE'],
@@ -873,7 +873,7 @@ class RedisDriver(AbstractDriver):
 		assert w_id, pformat(params)
 		assert d_id, pformat(params)
 		
-		if c_id != None:
+		if c_id:
 			#-----------------------------------
 			# Get Customer By Customer ID Query
 			#-----------------------------------
@@ -924,7 +924,7 @@ class RedisDriver(AbstractDriver):
 				print 'Get Customers By Last Name Query:', time.time() - t0
 				t0 = time.time()
 		assert len(customer) > 0
-		assert c_id != None
+		assert c_id
 		
 		#----------------------
 		# Get Last Order Query
@@ -1021,7 +1021,7 @@ class RedisDriver(AbstractDriver):
 		wtr = self.w_pipes[node]
 		
 		t0 = time.time()
-		if c_id != None:
+		if c_id:
 			#--------------------------
 			# Get Customer By ID Query
 			#--------------------------
@@ -1073,7 +1073,7 @@ class RedisDriver(AbstractDriver):
 				t0 = time.time()
 				
 		assert len(customer) > 0
-		assert c_id != None
+		assert c_id
 		
 		c_balance = float(customer['C_BALANCE']) - h_amount
 		c_ytd_payment = float(customer['C_YTD_PAYMENT']) + h_amount
