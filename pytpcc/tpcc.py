@@ -35,7 +35,7 @@ import argparse
 import glob
 import time 
 import multiprocessing
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 from pprint import pprint,pformat
 
 from util import *
@@ -114,7 +114,7 @@ def loaderFunc(driverClass, scaleParameters, args, config, w_ids, debug):
         driver.loadFinish()   
     except KeyboardInterrupt:
             return -1
-    except (Exception, AssertionError), ex:
+    except (Exception, AssertionError) as  ex:
         logging.warn("Failed to load data: %s" % (ex))
         #if debug:
         traceback.print_exc(file=sys.stdout)
@@ -212,8 +212,8 @@ if __name__ == '__main__':
     assert driver != None, "Failed to create '%s' driver" % args['system']
     if args['print_config']:
         config = driver.makeDefaultConfig()
-        print driver.formatConfig(config)
-        print
+        print(driver.formatConfig(config))
+        print()
         sys.exit(0)
 
     ## Load Configuration file
@@ -263,7 +263,7 @@ if __name__ == '__main__':
         else:
             results = startExecution(driverClass, scaleParameters, args, config)
         assert results
-        print results.show(load_time)
+        print(results.show(load_time))
     ## IF
     
 ## MAIN
